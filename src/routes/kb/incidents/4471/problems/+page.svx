@@ -1,0 +1,48 @@
+---
+layout: runbook
+title: '#4471 · three problems, not one'
+owner: support desk
+status: draft
+reviewed: 2026-11-11
+signature: v1.eyJzdWIiOiIzNzEwIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTQzODI5OTAsImV4cCI6MTc5NDQ2OTM5MH0.73GJZemEKmkz6711dQ-qrDVQbJaqgxLPA5rGojI3eA0
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) holds every report about a wrong date since April, merged as one known
+issue with one fix queued. Read by tenant and by body, its reports describe three different bugs.
+The queued parser fix closes only the first one.
+
+<Callout kind="warn">
+Not one issue. Three tickets, one per problem. Fixing the parser leaves the other two open.
+</Callout>
+
+## The problems
+
+<ProblemTable ticket={4471} />
+
+1. **`parser`: the shared parser reads dates month first.** Every tenant in #4471 writes the day
+   first, so 7 April comes out as 4 July. Every tenant, every channel.
+2. **`hint`: the booking-v3 form tells people to type month first.** It prints `MM/DD/YYYY`, then
+   reads the field day first, the tenant's way. Only form reports from the three booking-v3 tenants.
+   A correct parser does not fix a wrong hint.
+3. **`shift`: dates move by one day.** Not a swap: Tuesday becomes Monday, one meeting lands on
+   different days in Lisbon and Toronto, every booking in June is one day off. A time zone bug. The
+   desk had marked these reports in `desk-notes.json` but still counted them under the parser.
+
+## How this was counted
+
+- One id, one report: the export pages overlap, so some reports come twice.
+- The cause comes from the tenant (its locale and its booking form, `causes.ts`), not from the
+  intake tag. Intake guessed from the reporter's browser, and the guess is often wrong.
+- A one-day move is its own problem, whatever the tenant. The ids come from the desk's notes and
+  match the only report bodies that describe one.
+- Decision [0001](/kb/decisions/0001-dedupe-by-subject) merges on subject line. These reports use
+  twelve subjects across all three problems, so the subject says nothing about the cause.
+- Build with full locale data. Without it, no locale reads as day-first and every report is unplaced.
+
+<RenderStamp {signature} />
