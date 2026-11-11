@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 · three problems, not one'
 owner: support desk
-status: draft
+status: closed
 reviewed: 2026-11-11
 signature: v1.eyJzdWIiOiIzNzEwIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTQzODI5OTAsImV4cCI6MTc5NDQ2OTM5MH0.73GJZemEKmkz6711dQ-qrDVQbJaqgxLPA5rGojI3eA0
 ---
@@ -14,11 +14,13 @@ signature: v1.eyJzdWIiOiIzNzEwIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYX
 </script>
 
 [#4471](/kb/incidents/4471) holds every report about a wrong date since April, merged as one known
-issue with one fix queued. Read by tenant and by body, its reports describe three different bugs.
-The queued parser fix closes only the first one.
+issue with one fix queued. Read by tenant and by body, its reports describe three different bugs,
+with one ticket each. Engineering closed #4471 on 5 October.
 
 <Callout kind="warn">
-Not one issue. Three tickets, one per problem. Fixing the parser leaves the other two open.
+Not one issue. The parser is fixed. The booking-v3 hint is won't-fix: the form is retired. The
+one-day moves were not part of the engineering update, and the parser fix does not cover them.
+If they keep coming, reopen ticket #3.
 </Callout>
 
 ## The problems

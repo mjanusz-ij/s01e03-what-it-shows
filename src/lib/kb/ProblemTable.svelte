@@ -34,7 +34,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>came in by</th><th>intake tagged</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>came in by</th><th>intake tagged</th><th>seen</th><th>ticket</th><th>outcome</th></tr>
   </thead>
   <tbody>
     {#each split.rows as g (g.problem)}
@@ -47,6 +47,7 @@
         <td class="m">{fmt(g.taggedAs)}</td>
         <td class="m">{g.firstSeen} → {g.lastSeen}</td>
         <td>{#if p.issue}<a href="{ISSUES}/{p.issue}">#{p.issue}</a>{:else}none{/if}</td>
+        <td class="m">{p.outcome}</td>
       </tr>
     {/each}
   </tbody>

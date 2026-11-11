@@ -4,11 +4,12 @@ import { causeOf, dayFirst, uniqueById, type Report, type Tenant } from '#lib/kb
 
 export type Problem = 'parser' | 'hint' | 'shift' | 'unplaced';
 
-export const PROBLEMS: Record<Problem, { title: string; issue: number | null }> = {
-  parser: { title: 'Shared parser reads day-first dates month first', issue: 1 },
-  hint: { title: 'booking-v3 form hint says MM/DD/YYYY for day-first tenants', issue: 2 },
-  shift: { title: 'Dates move by one day (time zone)', issue: 3 },
-  unplaced: { title: 'No tenant on file, or tenant not day-first', issue: null },
+// outcome: engineering's update on #4471 (closed 2026-10-05).
+export const PROBLEMS: Record<Problem, { title: string; issue: number | null; outcome: string }> = {
+  parser: { title: 'Shared parser reads day-first dates month first', issue: 1, outcome: 'fixed: fix(dates): parse dd/mm for eu locales' },
+  hint: { title: 'booking-v3 form hint says MM/DD/YYYY for day-first tenants', issue: 2, outcome: "won't fix: booking-v3 form retired" },
+  shift: { title: 'Dates move by one day (time zone)', issue: 3, outcome: 'not in the engineering update; not covered by the parser fix' },
+  unplaced: { title: 'No tenant on file, or tenant not day-first', issue: null, outcome: '' },
 };
 
 export const ISSUES = 'https://github.com/mjanusz-ij/s01e03-what-it-shows/issues';
