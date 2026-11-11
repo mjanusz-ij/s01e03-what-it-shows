@@ -39,8 +39,9 @@ Not one issue. Three tickets, one per problem. Fixing the parser leaves the othe
 - One id, one report: the export pages overlap, so some reports come twice.
 - The cause comes from the tenant (its locale and its booking form, `causes.ts`), not from the
   intake tag. Intake guessed from the reporter's browser, and the guess is often wrong.
-- A one-day move is its own problem, whatever the tenant. The ids come from the desk's notes and
-  match the only report bodies that describe one.
+- Counted the desk's way: each report under the cause its tenant gives it. A one-day move is also
+  its own problem, so those reports count under `parser` and again under `shift`. Their ids come
+  from the desk's notes and match the only report bodies that describe one.
 - Decision [0001](/kb/decisions/0001-dedupe-by-subject) merges on subject line. These reports use
   twelve subjects across all three problems, so the subject says nothing about the cause.
 - Build with full locale data. Without it, no locale reads as day-first and every report is unplaced.

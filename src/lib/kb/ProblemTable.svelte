@@ -14,8 +14,12 @@
       .sort((a, b) => b[1] - a[1])
       .map(([k, v]) => `${k} ×${v}`)
       .join(' · ');
+  const shift = $derived(split.rows.find((g) => g.problem === 'shift'));
+  const filedAs = $derived(
+    shift ? [...new Set(split.rows.filter((g) => g.problem !== 'shift' && g.reports.some((r) => shift.reports.includes(r))).map((g) => g.problem))] : [],
+  );
   const mistagged = $derived(
-    split.rows.reduce((n, g) => n + g.reports.filter((r) => r.meta.intakeTag !== g.problem).length, 0),
+    split.rows.filter((g) => g.problem !== 'shift').reduce((n, g) => n + g.reports.filter((r) => r.meta.intakeTag !== g.problem).length, 0),
   );
 </script>
 
@@ -48,6 +52,9 @@
   </tbody>
 </table>
 
+{#if shift}
+  <p class="m">The {shift.reports.length} <code>shift</code> reports stay counted where the desk files them by tenant ({filedAs.join(', ')}), so the rows add up to more than {split.merged.length}.</p>
+{/if}
 <p class="m">{mistagged} of {split.merged.length} reports carry an intake tag that is not their problem.</p>
 
 <style>

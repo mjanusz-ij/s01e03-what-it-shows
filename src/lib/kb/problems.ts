@@ -13,10 +13,12 @@ export const PROBLEMS: Record<Problem, { title: string; issue: number | null }> 
 
 export const ISSUES = 'https://github.com/mjanusz-ij/s01e03-what-it-shows/issues';
 
-// oneDayMove: report ids the desk read as a one-day move (desk-notes.json). A move, not a swap.
-export function problemOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem {
-  if (oneDayMove.includes(r.id)) return 'shift';
-  return causeOf(r, t) ?? 'unplaced';
+// Counted the desk's way: every report under the cause its tenant gives it (causes.ts), once.
+// oneDayMove (desk-notes.json) are reports read as a one-day move, not a swap: their own problem,
+// counted again under `shift` while they stay filed under their tenant's cause.
+export function problemsOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem[] {
+  const filed: Problem = causeOf(r, t) ?? 'unplaced';
+  return oneDayMove.includes(r.id) ? [filed, 'shift'] : [filed];
 }
 
 export type ProblemRow = {
@@ -38,8 +40,7 @@ export function splitTicket(
   const merged = uniqueById(all).filter((r) => r.mergedInto === ticket);
   const by = new Map<Problem, Report[]>();
   for (const r of merged) {
-    const p = problemOf(r, tenantOf(r), oneDayMove);
-    by.set(p, [...(by.get(p) ?? []), r]);
+    for (const p of problemsOf(r, tenantOf(r), oneDayMove)) by.set(p, [...(by.get(p) ?? []), r]);
   }
   const count = (rs: Report[], key: (r: Report) => string) =>
     rs.reduce<Record<string, number>>((n, r) => ({ ...n, [key(r)]: (n[key(r)] ?? 0) + 1 }), {});
